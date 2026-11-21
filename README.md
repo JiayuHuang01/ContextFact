@@ -9,17 +9,23 @@
   <img src="assets/method.png" width="100%" alt="ContextFact overview">
 </p>
 
-Long-term conversations scatter facts across turns and sessions, and a fact often depends on context said somewhere else. Existing memories lose part of that context while they are built: even when given their complete memory banks with no retrieval at all, all seven baseline memories we tested answer single-hop questions worse than the raw dialogue. Reading everything is no fix either: keeping only the sessions that hold the evidence beats reading the full history by 4.61–17.44 points on multi-hop and temporal questions. A memory therefore has to keep each fact with its context while keeping evidence selectively accessible.
+## Motivation
 
-ContextFact stores each fact **together with the context needed to interpret it**, even when that context is spread across nonadjacent turns. It also links facts across sessions through **entities grounded in the source dialogue**. With Qwen3.5-27B as the backbone, it reaches **86.49%** judge accuracy on LoCoMo and **91.00%** on LongMemEval-S, while reading only **~21%** of the evidence tokens used by the strongest baseline.
+- **Facts depend on context.** Long-term conversations scatter facts across turns and sessions, and a fact often makes sense only with context said somewhere else.
+- **Memory construction loses that context.** Even when reading their complete memory banks with no retrieval, all seven baseline memories we tested answer single-hop questions worse than the raw dialogue.
+- **Reading everything is no fix.** Keeping only the sessions that hold the evidence beats reading the full history by 4.61–17.44 points on multi-hop and temporal questions.
 
-## Overview
+## Highlights
 
-**Context-preserving fact extraction.** For each session, an LLM writes self-contained *ContextFacts (CFs)*. A CF keeps the turns that a fact depends on, and distinct facts stay separately retrievable.
+- **Facts kept in context.** Each fact is stored with the context needed to interpret it, even when that context spans nonadjacent turns.
+- **Facts linked across sessions** through entities grounded in the source dialogue.
+- **State of the art with less evidence.** With Qwen3.5-27B, 86.49% judge accuracy on LoCoMo and 91.00% on LongMemEval-S, reading only ~21% of the evidence tokens of the strongest baseline.
 
-**Linked two-view memory.** Across sessions, entity mentions are bound incrementally, grouped into a topic directory, and rebuilt from the original turns into *Entities*. Every Entity record links back to the CFs that support it.
+## Method
 
-**Dual-view retrieval.** ContextFact comes in two variants:
+1. **Context-preserving fact extraction.** For each session, an LLM writes self-contained *ContextFacts (CFs)*. Each CF keeps the turns its fact depends on, and distinct facts stay separately retrievable.
+2. **Linked two-view memory.** Across sessions, entity mentions are bound, grouped into a topic directory, and rebuilt from the original turns into *Entities*. Every Entity record links back to its supporting CFs.
+3. **Dual-view retrieval.** ContextFact comes in two variants:
 
 | Variant | Memory | Retrieval | Reader input |
 |:--|:--|:--|:--|
