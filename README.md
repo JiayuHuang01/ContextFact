@@ -95,6 +95,35 @@ Every system runs its own native retrieval pipeline. **J** is LLM-judge accuracy
 
 <sub><b>Bold</b> marks the best result in each column. Full Context is a reference and is not ranked. * Memora uses its higher-performing policy variant (P). † AtomMem uses the authors' released pre-extracted facts.</sub>
 
+### Transfer across memory representations
+
+Applying the entity construction, retrieval and readout pipeline (+Entity) to SeCom segments, SimpleMem facts and EMem events beats giving each baseline more of its own units at a matched evidence length (+Budget), by 1.10–8.12 points in every system–model combination (LoCoMo).
+
+<table>
+<thead>
+<tr><th rowspan="2" align="left">Memory bank</th><th colspan="2">Tokens</th><th colspan="2">J</th><th rowspan="2">ΔJ</th></tr>
+<tr><th>+Budget</th><th>+Entity</th><th>+Budget</th><th>+Entity</th></tr>
+</thead>
+<tbody>
+<tr><td colspan="6" align="center"><i>GPT-4.1-mini</i></td></tr>
+<tr><td>SeCom</td><td align="center">5,354</td><td align="center">5,358</td><td align="center">80.58</td><td align="center"><b>84.68</b></td><td align="center">+4.10</td></tr>
+<tr><td>SimpleMem</td><td align="center">5,960</td><td align="center">5,930</td><td align="center">83.38</td><td align="center"><b>84.81</b></td><td align="center">+1.43</td></tr>
+<tr><td>EMem</td><td align="center">4,040</td><td align="center">4,027</td><td align="center">83.12</td><td align="center"><b>84.22</b></td><td align="center">+1.10</td></tr>
+<tr><td colspan="6" align="center"><i>Qwen3.5-27B</i></td></tr>
+<tr><td>SeCom</td><td align="center">4,844</td><td align="center">4,872</td><td align="center">77.01</td><td align="center"><b>85.13</b></td><td align="center">+8.12</td></tr>
+<tr><td>SimpleMem</td><td align="center">2,968</td><td align="center">2,863</td><td align="center">77.01</td><td align="center"><b>78.38</b></td><td align="center">+1.37</td></tr>
+<tr><td>EMem</td><td align="center">3,294</td><td align="center">3,193</td><td align="center">80.32</td><td align="center"><b>82.27</b></td><td align="center">+1.95</td></tr>
+</tbody>
+</table>
+
+### Construction–reader transfer
+
+Across five construction models and five readers on LoCoMo, ContextFact-E accuracy varies by only 0.7–1.9 points when the construction model changes with the reader fixed, against 6.8–8.1 points when the reader changes with the memory bank fixed. Construction and reader models can be chosen separately.
+
+<p align="center">
+  <img src="assets/transfer_construction_reader.png" width="80%" alt="ContextFact-E judge accuracy for five construction models by five reader models on LoCoMo">
+</p>
+
 <details>
 <summary><b>Per-category judge accuracy</b></summary>
 
