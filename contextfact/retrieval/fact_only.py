@@ -30,3 +30,9 @@ def retrieve(bank, conv, query, search, reranker, *, fmt='numbered', cf_k=30, to
     ids = ranked[:top_k]
     return dict(context=render(bank, ids, fmt), fact_ids=ids, entity_ids=[], record_ids=[],
                 candidate_pool=dict(cf_ids=seeds), cf_rerank_order=ranked)
+
+
+def fullbank(bank, conv):
+    """Every CF of the conversation, in order, with no retrieval."""
+    ids = list(bank.cf_by_conv[conv])
+    return dict(context='\n\n'.join(bank.docs[f]['text'] for f in ids), fact_ids=ids, entity_ids=[], record_ids=[])

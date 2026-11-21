@@ -4,6 +4,7 @@ from pathlib import Path
 import time
 import urllib.request
 
+from . import cli
 from .config import chat_endpoint
 from .io import digest, read, save
 
@@ -68,10 +69,15 @@ class Chat:
 
     def complete(self, body, *, index=0, attempt=0):
         """Return the response, using the cache."""
-        target = self.cache / f'{digest(body)}_{attempt}.json'
+        backend = self.endpoint.backend
+        key = digest(body) if backend == 'api' else digest(dict(body, backend=backend))
+        target = self.cache / f'{key}_{attempt}.json'
         if target.exists():
             return read(target)['response']
-        response = post(self.endpoint.url(index + attempt) + '/chat/completions', body, self.endpoint.key)
+        if backend == 'api':
+            response = post(self.endpoint.url(index + attempt) + '/chat/completions', body, self.endpoint.key)
+        else:
+            response = cli.complete(backend, body)
         save(target, dict(response=response))
         return response
 

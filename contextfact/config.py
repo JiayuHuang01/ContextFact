@@ -48,6 +48,7 @@ class Endpoint:
     model: str
     key: str | None
     disable_thinking: bool
+    backend: str = 'api'
 
     def url(self, index=0):
         """Base URL for a request, round-robin over replicas."""
@@ -58,6 +59,14 @@ def chat_endpoint(role='LLM'):
     """Chat endpoint for LLM, READER or JUDGE."""
     load_dotenv()
     fallback = 'LLM' if role == 'READER' else None
+    backend = 'api' if role == 'JUDGE' else _get(role, 'BACKEND', 'api', fallback=fallback)
+    if backend not in ('api', 'codex', 'claude'):
+        raise ValueError(f'{role}_BACKEND must be api, codex or claude')
+    if backend != 'api':
+        model = _get(role, 'MODEL', fallback=fallback)
+        if not model:
+            raise RuntimeError(f'Set {role}_MODEL (see .env.example)')
+        return Endpoint([], model, None, False, backend)
     if role == 'JUDGE':
         urls = _urls(_get('JUDGE', 'BASE_URL'))
         model = _get('JUDGE', 'MODEL', 'gpt-4o-mini')

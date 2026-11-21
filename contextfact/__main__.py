@@ -80,8 +80,8 @@ def cmd_retrieve(a):
                 return candidate
         raise SystemExit(f'Missing {name}.json(.gz) in {bank_dir}')
     facts, dates = bank_file('facts'), bank_file('session_dates')
-    if a.variant == 'F':
-        bank = fact_only.prepare(Bank(facts, dates), a.cf_format)
+    if a.variant in ('F', 'full'):
+        bank = fact_only.prepare(Bank(facts, dates), 'numbered' if a.variant == 'full' else a.cf_format)
     else:
         bank = EntityBank(facts, bank_file('entity_bank'), dates)
     if a.query:
@@ -98,16 +98,20 @@ def cmd_retrieve(a):
     out = Path(a.out)
     services = Services(out / 'service_cache', offline=a.offline)
     frozen(out / 'retrieval.json', dict(
-        variant=a.variant, bank=str(bank_dir), counts=bank.counts(), services=services.config(),
+        variant=a.variant, bank=str(bank_dir), counts=bank.counts(),
+        services=None if a.variant == 'full' else services.config(),
         cf_k=a.cf_k, entity_k=a.entity_k if a.variant == 'E' else 0, top_k=a.top_k,
         cf_format=a.cf_format if a.variant == 'F' else None, rrf_k=60,
         questions_sha256=None if a.query else digest(rows)))
-    search = Search(bank, services, out / 'service_cache')
-    search.build(sorted({r['conv'] for r in rows}), kinds=('cf',) if a.variant == 'F' else ('cf', 'entity'))
+    if a.variant != 'full':
+        search = Search(bank, services, out / 'service_cache')
+        search.build(sorted({r['conv'] for r in rows}), kinds=('cf',) if a.variant == 'F' else ('cf', 'entity'))
 
     def work(row):
         """Retrieve one question and save the result."""
-        if a.variant == 'F':
+        if a.variant == 'full':
+            result = fact_only.fullbank(bank, row['conv'])
+        elif a.variant == 'F':
             result = fact_only.retrieve(bank, row['conv'], row['question'], search, services.rerank,
                                         fmt=a.cf_format, cf_k=a.cf_k, top_k=a.top_k)
         else:
@@ -152,13 +156,15 @@ def cmd_run(a):
     out = Path(a.out)
     conv = [x for c in a.conv or [] for x in ('--conv', c)]
     limit = ['--limit', str(a.limit)] if a.limit else []
+    workers = ['--workers', str(a.workers)] if a.workers else []
     variants = ('F', 'E') if a.variant == 'FE' else (a.variant,)
-    main(['build', '--input', a.input, '--variant', variants[-1], '--out', str(out / 'build'), *conv])
+    main(['build', '--input', a.input, '--variant', 'E' if 'E' in variants else 'F',
+          '--out', str(out / 'build'), *conv, *workers])
     for v in variants:
         main(['retrieve', '--bank', str(out / 'build/bank'), '--variant', v, '--questions', a.questions,
-              '--out', str(out / f'retrieval_{v}'), *conv, *limit])
+              '--out', str(out / f'retrieval_{v}'), *conv, *limit, *workers])
         main(['evaluate', '--retrieval', str(out / f'retrieval_{v}'), '--questions', a.questions,
-              '--out', str(out / f'eval_{v}'), *conv, *limit, *(['--no-judge'] if a.no_judge else [])])
+              '--out', str(out / f'eval_{v}'), *conv, *limit, *workers, *(['--no-judge'] if a.no_judge else [])])
 
 
 def main(argv=None):
@@ -170,10 +176,11 @@ def main(argv=None):
     s = sub.add_parser('run', help='build -> retrieve -> evaluate in one command')
     s.add_argument('--input', default='data/locomo10.json')
     s.add_argument('--questions', default='data/questions.json')
-    s.add_argument('--variant', choices=('F', 'E', 'FE'), default='FE')
+    s.add_argument('--variant', choices=('F', 'E', 'FE', 'full'), default='FE')
     s.add_argument('--conv', action='append')
     s.add_argument('--limit', type=int)
     s.add_argument('--no-judge', action='store_true')
+    s.add_argument('--workers', type=int)
     s.add_argument('--out', default='runs/locomo')
     s.set_defaults(func=cmd_run)
 
@@ -192,7 +199,7 @@ def main(argv=None):
 
     s = sub.add_parser('retrieve', help='retrieve evidence for questions (no answering)')
     s.add_argument('--bank', required=True, help='<build>/bank')
-    s.add_argument('--variant', choices=('F', 'E'), default='E')
+    s.add_argument('--variant', choices=('F', 'E', 'full'), default='E')
     s.add_argument('--questions', help='question JSON/JSONL with qid, conv, question')
     s.add_argument('--query', help='ad-hoc question (needs one --conv); prints the context')
     s.add_argument('--conv', action='append')

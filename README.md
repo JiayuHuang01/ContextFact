@@ -174,6 +174,17 @@ Each role takes `*_BASE_URL`, `*_MODEL` and `*_API_KEY`. Any OpenAI-compatible e
 
 Embedding and reranker models default to Qwen3-Embedding-8B and MemReranker-4B.
 
+**Switching to a CLI subscription.** The construction LLM and the Reader can run through the Codex CLI (ChatGPT subscription) or Claude Code (Claude subscription) instead of an API. Log in to the CLI, then set the backend and model in `.env`:
+
+```bash
+LLM_BACKEND=codex             # api (default) | codex | claude
+LLM_MODEL=gpt-5.6-luna
+READER_BACKEND=claude         # defaults to LLM_BACKEND
+READER_MODEL=claude-sonnet-5-5
+```
+
+The Judge always uses the API. CLI backends do not take temperature, seed or max_tokens.
+
 ### 3. Run
 
 LoCoMo is included in [data/](data/).
@@ -184,9 +195,12 @@ python -m contextfact run --conv conv-26 --limit 20 --out runs/smoke
 
 # Full run: builds the memory once, then evaluates ContextFact-F and ContextFact-E
 python -m contextfact run --out runs/locomo
+
+# Fullbank: the Reader reads every ContextFact of the conversation, with no retrieval
+python -m contextfact run --variant full --out runs/fullbank
 ```
 
-Reports are written to `runs/locomo/eval_F/report.json` and `runs/locomo/eval_E/report.json`. Rerun the same command to resume after an interruption.
+Reports are written to `<out>/eval_<variant>/report.json`. Rerun the same command to resume after an interruption; add `--workers N` to change concurrency.
 
 To use your own conversations, convert them to the LoCoMo format described in [data/README.md](data/README.md).
 
@@ -195,10 +209,12 @@ To use your own conversations, convert them to the LoCoMo format described in [d
 ```
 contextfact/
 ├── construction/   # inline dates → ContextFact extraction → entity binding, directory, reconstruction
-├── retrieval/      # hybrid search, reranking, ContextFact-F / -E
+├── retrieval/      # hybrid search, reranking, ContextFact-F / -E, fullbank
 ├── evaluation/     # Reader, Judge, metrics
 ├── prompts/        # prompt templates
-└── __main__.py     # CLI: run | prepare | build | retrieve | evaluate
+├── llm.py          # chat client (API or CLI subscription)
+├── cli.py          # Codex / Claude Code subscription backends
+└── __main__.py     # command line: run | prepare | build | retrieve | evaluate
 ```
 
 ## Citation
