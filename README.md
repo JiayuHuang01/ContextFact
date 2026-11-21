@@ -1,31 +1,12 @@
-<div align="center">
-
-# ContextFact
-
-### Remembering Facts in Context for Long-Term Conversational Agents
-
-[![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
-[![License: MIT](https://img.shields.io/badge/license-MIT-2ea44f)](LICENSE)
-[![LoCoMo](https://img.shields.io/badge/LoCoMo-86.49%25-c0392b)](#results)
-[![LongMemEval-S](https://img.shields.io/badge/LongMemEval--S-91.00%25-c0392b)](#results)
-
-[Overview](#overview) · [Results](#results) · [Quick Start](#quick-start) · [Citation](#citation)
-
-<img src="assets/teaser.png" width="460" alt="Overall judge accuracy versus evidence tokens on LoCoMo">
-
-<sub>Judge accuracy vs. evidence tokens on LoCoMo (Qwen3.5-27B). ContextFact gets higher accuracy from less text.</sub>
-
-</div>
-
----
-
-ContextFact stores each fact **together with the context needed to interpret it**, even when that context is spread across nonadjacent turns. It also links facts across sessions through **entities grounded in the source dialogue**. With Qwen3.5-27B as the backbone, it reaches **86.49%** judge accuracy on LoCoMo and **91.00%** on LongMemEval-S, while reading only **~21%** of the evidence tokens used by the strongest baseline.
-
-## Overview
+# ContextFact: Remembering Facts in Context for Long-Term Conversational Agents
 
 <p align="center">
   <img src="assets/method.png" width="100%" alt="ContextFact overview">
 </p>
+
+ContextFact stores each fact **together with the context needed to interpret it**, even when that context is spread across nonadjacent turns. It also links facts across sessions through **entities grounded in the source dialogue**. With Qwen3.5-27B as the backbone, it reaches **86.49%** judge accuracy on LoCoMo and **91.00%** on LongMemEval-S, while reading only **~21%** of the evidence tokens used by the strongest baseline.
+
+## Overview
 
 **Context-preserving fact extraction.** For each session, an LLM writes self-contained *ContextFacts (CFs)*. A CF keeps the turns that a fact depends on, and distinct facts stay separately retrievable.
 
@@ -39,6 +20,10 @@ ContextFact stores each fact **together with the context needed to interpret it*
 | **ContextFact-E** | CFs + Entities | 30 CF + 30 Entity seeds → one-hop expansion through record links → rerank each view | 10 CFs + 10 Entities |
 
 ## Results
+
+<p align="center">
+  <img src="assets/teaser.png" width="460" alt="Judge accuracy versus evidence tokens on LoCoMo">
+</p>
 
 Every system runs its own native retrieval pipeline. **J** is LLM-judge accuracy (%, GPT-4o-mini judge). **Tokens** is the mean number of evidence tokens the Reader sees per question.
 
