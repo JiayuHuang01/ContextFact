@@ -5,10 +5,6 @@
 [![LoCoMo](https://img.shields.io/badge/LoCoMo-86.49%25-c0392b)](#results)
 [![LongMemEval-S](https://img.shields.io/badge/LongMemEval--S-91.00%25-c0392b)](#results)
 
-<p align="center">
-  <img src="assets/method.png" width="100%" alt="ContextFact overview">
-</p>
-
 ## Motivation
 
 End-to-end QA scores mix three things: what memory construction preserved, what retrieval selected, and how well the Reader used it. Two controlled diagnostics on LoCoMo pull these apart.
@@ -34,6 +30,10 @@ End-to-end QA scores mix three things: what memory construction preserved, what 
 - **State of the art with less evidence.** With Qwen3.5-27B, 86.49% judge accuracy on LoCoMo and 91.00% on LongMemEval-S, reading only ~21% of the evidence tokens of the strongest baseline.
 
 ## Method
+
+<p align="center">
+  <img src="assets/method.png" width="100%" alt="ContextFact overview">
+</p>
 
 1. **Context-preserving fact extraction.** For each session, an LLM writes self-contained *ContextFacts (CFs)*. Each CF keeps the turns its fact depends on, and distinct facts stay separately retrievable.
 2. **Linked two-view memory.** Across sessions, entity mentions are bound, grouped into a topic directory, and rebuilt from the original turns into *Entities*. Every Entity record links back to its supporting CFs.
