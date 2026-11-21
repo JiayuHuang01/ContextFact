@@ -11,9 +11,21 @@
 
 ## Motivation
 
-- **Facts depend on context.** Long-term conversations scatter facts across turns and sessions, and a fact often makes sense only with context said somewhere else.
-- **Memory construction loses that context.** Even when reading their complete memory banks with no retrieval, all seven baseline memories we tested answer single-hop questions worse than the raw dialogue.
-- **Reading everything is no fix.** Keeping only the sessions that hold the evidence beats reading the full history by 4.61–17.44 points on multi-hop and temporal questions.
+End-to-end QA scores mix three things: what memory construction preserved, what retrieval selected, and how well the Reader used it. Two controlled diagnostics on LoCoMo pull these apart.
+
+<table>
+  <tr>
+    <td align="center" width="33%"><img src="assets/diag_fullbank.png" width="100%"><br><sub>(a) Single-hop answerability</sub></td>
+    <td align="center" width="34%"><img src="assets/diag_loss_cases.png" width="100%"><br><sub>(b) Construction-time loss</sub></td>
+    <td align="center" width="33%"><img src="assets/diag_scope.png" width="100%"><br><sub>(c) Evidence-scope comparison</sub></td>
+  </tr>
+</table>
+
+- **Retrieval is not the only bottleneck.** Given each complete memory bank with no retrieval at all, all seven baseline banks still fall below the raw dialogue on single-hop questions (a). Some answers were lost during construction, either by dropping a queried detail or by keeping the statements but losing the relation between them (b).
+- **Reading everything is not ideal either.** Keeping only the sessions that contain the evidence beats reading the full history by 4.61–17.44 points on multi-hop and temporal questions (c).
+- **Unit boundaries change what is found.** At the same unique-turn budget, retrieving adjacent-turn windows beats single turns on accuracy and gold-turn recall, but wider windows bring no consistent further gain.
+
+**Design principle.** Memory boundaries should follow the dependencies required for interpretation, not a fixed contextual span, while preserving separately retrievable units that can be selectively connected at query time.
 
 ## Highlights
 
