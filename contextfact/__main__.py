@@ -1,4 +1,4 @@
-"""ContextFact command line: prepare | build | retrieve | evaluate."""
+"""ContextFact command line: run | prepare | build | retrieve | evaluate."""
 import argparse
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import json
@@ -147,11 +147,35 @@ def cmd_evaluate(a):
         print_report(report, a.out)
 
 
+def cmd_run(a):
+    """Build the memory once, then retrieve and evaluate each variant."""
+    out = Path(a.out)
+    conv = [x for c in a.conv or [] for x in ('--conv', c)]
+    limit = ['--limit', str(a.limit)] if a.limit else []
+    variants = ('F', 'E') if a.variant == 'FE' else (a.variant,)
+    main(['build', '--input', a.input, '--variant', variants[-1], '--out', str(out / 'build'), *conv])
+    for v in variants:
+        main(['retrieve', '--bank', str(out / 'build/bank'), '--variant', v, '--questions', a.questions,
+              '--out', str(out / f'retrieval_{v}'), *conv, *limit])
+        main(['evaluate', '--retrieval', str(out / f'retrieval_{v}'), '--questions', a.questions,
+              '--out', str(out / f'eval_{v}'), *conv, *limit, *(['--no-judge'] if a.no_judge else [])])
+
+
 def main(argv=None):
     """Run the command line."""
     p = argparse.ArgumentParser(prog='python -m contextfact', description=__doc__,
                                 formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = p.add_subparsers(dest='command', required=True)
+
+    s = sub.add_parser('run', help='build -> retrieve -> evaluate in one command')
+    s.add_argument('--input', default='data/locomo10.json')
+    s.add_argument('--questions', default='data/questions.json')
+    s.add_argument('--variant', choices=('F', 'E', 'FE'), default='FE')
+    s.add_argument('--conv', action='append')
+    s.add_argument('--limit', type=int)
+    s.add_argument('--no-judge', action='store_true')
+    s.add_argument('--out', default='runs/locomo')
+    s.set_defaults(func=cmd_run)
 
     s = sub.add_parser('prepare', help='LoCoMo QA -> question file (category 5 excluded)')
     s.add_argument('--locomo', required=True, help='raw locomo10.json')

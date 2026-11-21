@@ -9,6 +9,8 @@
   <img src="assets/method.png" width="100%" alt="ContextFact overview">
 </p>
 
+Long-term conversations scatter facts across turns and sessions, and a fact often depends on context said somewhere else. Existing memories lose part of that context while they are built: even when given their complete memory banks with no retrieval at all, all seven baseline memories we tested answer single-hop questions worse than the raw dialogue. Reading everything is no fix either: keeping only the sessions that hold the evidence beats reading the full history by 4.61–17.44 points on multi-hop and temporal questions. A memory therefore has to keep each fact with its context while keeping evidence selectively accessible.
+
 ContextFact stores each fact **together with the context needed to interpret it**, even when that context is spread across nonadjacent turns. It also links facts across sessions through **entities grounded in the source dialogue**. With Qwen3.5-27B as the backbone, it reaches **86.49%** judge accuracy on LoCoMo and **91.00%** on LongMemEval-S, while reading only **~21%** of the evidence tokens used by the strongest baseline.
 
 ## Overview
@@ -166,28 +168,19 @@ Each role takes `*_BASE_URL`, `*_MODEL` and `*_API_KEY`. Any OpenAI-compatible e
 
 Embedding and reranker models default to Qwen3-Embedding-8B and MemReranker-4B.
 
-### 3. Run on LoCoMo
+### 3. Run
 
 LoCoMo is included in [data/](data/).
 
 ```bash
-# Build memory   (F: ContextFacts only · E: ContextFacts + Entities)
-python -m contextfact build --input data/locomo10.json --variant E --out runs/build
+# Smoke run: one conversation, 20 questions
+python -m contextfact run --conv conv-26 --limit 20 --out runs/smoke
 
-# Retrieve evidence
-python -m contextfact retrieve --bank runs/build/bank --variant E \
-    --questions data/questions.json --out runs/retrieval
-
-# Answer and evaluate   (prints per-category J / F1 / BLEU-1)
-python -m contextfact evaluate --retrieval runs/retrieval \
-    --questions data/questions.json --out runs/eval
+# Full run: builds the memory once, then evaluates ContextFact-F and ContextFact-E
+python -m contextfact run --out runs/locomo
 ```
 
-> [!TIP]
-> - Add `--conv conv-26` to `build`, `retrieve` or `evaluate` for a single-conversation smoke run, and `--limit N` to cap the number of questions.
-> - Every model call is cached, so rerunning an interrupted command picks up where it stopped.
-> - `retrieve --bank runs/build/bank --conv conv-26 --query "..." --out runs/query` prints the retrieved memory for an ad-hoc question.
-> - `evaluate --no-judge` skips the Judge and saves answers with per-question F1 / BLEU-1.
+Reports are written to `runs/locomo/eval_F/report.json` and `runs/locomo/eval_E/report.json`. Rerun the same command to resume after an interruption.
 
 To use your own conversations, convert them to the LoCoMo format described in [data/README.md](data/README.md).
 
@@ -199,7 +192,7 @@ contextfact/
 ├── retrieval/      # hybrid search, reranking, ContextFact-F / -E
 ├── evaluation/     # Reader, Judge, metrics
 ├── prompts/        # prompt templates
-└── __main__.py     # CLI: prepare | build | retrieve | evaluate
+└── __main__.py     # CLI: run | prepare | build | retrieve | evaluate
 ```
 
 ## Citation
