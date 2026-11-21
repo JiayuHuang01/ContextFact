@@ -1,0 +1,7 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the paper."
+title: "ContextFact: Remembering Facts in Context for Long-Term Conversational Agents"
+authors:
+  - name: "Anonymous Authors"
+type: software
+license: MIT

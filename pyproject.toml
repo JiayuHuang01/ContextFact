@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "contextfact"
+version = "0.1.0"
+description = "Context-preserving conversational memory with linked entity indices"
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.10"
+dependencies = ["numpy>=1.24", "rank-bm25==0.2.2", "tiktoken>=0.7", "nltk==3.9.4"]
+
+[tool.setuptools.packages.find]
+include = ["contextfact*"]
+
+[tool.setuptools.package-data]
+contextfact = ["prompts/*.md"]
