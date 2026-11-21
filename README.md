@@ -23,12 +23,6 @@ End-to-end QA scores mix three things: what memory construction preserved, what 
 
 **Design principle.** Memory boundaries should follow the dependencies required for interpretation, not a fixed contextual span, while preserving separately retrievable units that can be selectively connected at query time.
 
-## Highlights
-
-- **Facts kept in context.** Each fact is stored with the context needed to interpret it, even when that context spans nonadjacent turns.
-- **Facts linked across sessions** through entities grounded in the source dialogue.
-- **State of the art with less evidence.** With Qwen3.5-27B, 86.49% judge accuracy on LoCoMo and 91.00% on LongMemEval-S, reading only ~21% of the evidence tokens of the strongest baseline.
-
 ## Method
 
 <p align="center">
