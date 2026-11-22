@@ -187,11 +187,7 @@ READER_BACKEND=claude         # defaults to LLM_BACKEND
 READER_MODEL=claude-sonnet-5-5
 ```
 
-The Judge always uses the API. CLI backends do not take temperature, seed or max_tokens.
-
 ### 3. Run
-
-LoCoMo is included in [data/](data/).
 
 ```bash
 # Smoke run: one conversation, 20 questions
@@ -203,10 +199,6 @@ python -m contextfact run --out runs/locomo
 # Fullbank: the Reader reads every ContextFact of the conversation, with no retrieval
 python -m contextfact run --variant full --out runs/fullbank
 ```
-
-Reports are written to `<out>/eval_<variant>/report.json`. Rerun the same command to resume after an interruption; add `--workers N` to change concurrency.
-
-To use your own conversations, convert them to the LoCoMo format described in [data/README.md](data/README.md).
 
 ## Repository Structure
 
