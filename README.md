@@ -226,4 +226,4 @@ contextfact/
 
 ## License
 
-The code is released under the [MIT License](LICENSE).
+The code is released under the [MIT License](LICENSE). The [LoCoMo](https://github.com/snap-research/locomo) data in `data/` is licensed under CC BY-NC 4.0.
