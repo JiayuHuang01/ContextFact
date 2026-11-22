@@ -66,7 +66,7 @@ End-to-end QA scores mix three things: what memory construction preserved, what 
 
 ### Transfer across memory representations
 
-Applying the entity construction, retrieval and readout pipeline (+Entity) to SeCom segments, SimpleMem facts and EMem events beats giving each baseline more of its own units at a matched evidence length (+Budget), by 1.10–8.12 points overall and 1.42–10.28 points on multi-hop questions in every system–model combination (LoCoMo).
+Applying the entity construction, retrieval and readout pipeline (+Entity) to SeCom segments, SimpleMem facts and EMem events beats giving each baseline more of its own units at a matched evidence length (+Budget), by 1.10–8.12 points in every system–model combination (LoCoMo).
 
 <table>
 <thead>
