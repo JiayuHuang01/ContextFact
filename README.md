@@ -66,22 +66,22 @@ End-to-end QA scores mix three things: what memory construction preserved, what 
 
 ### Transfer across memory representations
 
-Applying the entity construction, retrieval and readout pipeline (+Entity) to SeCom segments, SimpleMem facts and EMem events beats giving each baseline more of its own units at a matched evidence length (+Budget), by 1.10–8.12 points in every system–model combination (LoCoMo).
+Applying the entity construction, retrieval and readout pipeline (+Entity) to SeCom segments, SimpleMem facts and EMem events beats giving each baseline more of its own units at a matched evidence length (+Budget), by 1.10–8.12 points overall and 1.42–10.28 points on multi-hop questions in every system–model combination (LoCoMo).
 
 <table>
 <thead>
-<tr><th rowspan="2" align="left">Memory bank</th><th colspan="2">Tokens</th><th colspan="2">J</th><th rowspan="2">ΔJ</th></tr>
-<tr><th>+Budget</th><th>+Entity</th><th>+Budget</th><th>+Entity</th></tr>
+<tr><th rowspan="2" align="left">Memory bank</th><th colspan="2">Tokens</th><th colspan="3">Multi-hop J</th><th colspan="3">Overall J</th></tr>
+<tr><th>+Budget</th><th>+Entity</th><th>+Budget</th><th>+Entity</th><th>Δ</th><th>+Budget</th><th>+Entity</th><th>Δ</th></tr>
 </thead>
 <tbody>
-<tr><td colspan="6" align="center"><i>GPT-4.1-mini</i></td></tr>
-<tr><td>SeCom</td><td align="center">5,354</td><td align="center">5,358</td><td align="center">80.58</td><td align="center"><b>84.68</b></td><td align="center">+4.10</td></tr>
-<tr><td>SimpleMem</td><td align="center">5,960</td><td align="center">5,930</td><td align="center">83.38</td><td align="center"><b>84.81</b></td><td align="center">+1.43</td></tr>
-<tr><td>EMem</td><td align="center">4,040</td><td align="center">4,027</td><td align="center">83.12</td><td align="center"><b>84.22</b></td><td align="center">+1.10</td></tr>
-<tr><td colspan="6" align="center"><i>Qwen3.5-27B</i></td></tr>
-<tr><td>SeCom</td><td align="center">4,844</td><td align="center">4,872</td><td align="center">77.01</td><td align="center"><b>85.13</b></td><td align="center">+8.12</td></tr>
-<tr><td>SimpleMem</td><td align="center">2,968</td><td align="center">2,863</td><td align="center">77.01</td><td align="center"><b>78.38</b></td><td align="center">+1.37</td></tr>
-<tr><td>EMem</td><td align="center">3,294</td><td align="center">3,193</td><td align="center">80.32</td><td align="center"><b>82.27</b></td><td align="center">+1.95</td></tr>
+<tr><td colspan="9" align="center"><i>GPT-4.1-mini</i></td></tr>
+<tr><td>SeCom</td><td align="center">5,354</td><td align="center">5,358</td><td align="center">77.30</td><td align="center"><b>80.50</b></td><td align="center">+3.20</td><td align="center">80.58</td><td align="center"><b>84.68</b></td><td align="center">+4.10</td></tr>
+<tr><td>SimpleMem</td><td align="center">5,960</td><td align="center">5,930</td><td align="center">78.72</td><td align="center"><b>80.14</b></td><td align="center">+1.42</td><td align="center">83.38</td><td align="center"><b>84.81</b></td><td align="center">+1.43</td></tr>
+<tr><td>EMem</td><td align="center">4,040</td><td align="center">4,027</td><td align="center">79.08</td><td align="center"><b>82.62</b></td><td align="center">+3.54</td><td align="center">83.12</td><td align="center"><b>84.22</b></td><td align="center">+1.10</td></tr>
+<tr><td colspan="9" align="center"><i>Qwen3.5-27B</i></td></tr>
+<tr><td>SeCom</td><td align="center">4,844</td><td align="center">4,872</td><td align="center">71.63</td><td align="center"><b>81.91</b></td><td align="center">+10.28</td><td align="center">77.01</td><td align="center"><b>85.13</b></td><td align="center">+8.12</td></tr>
+<tr><td>SimpleMem</td><td align="center">2,968</td><td align="center">2,863</td><td align="center">75.53</td><td align="center"><b>78.37</b></td><td align="center">+2.84</td><td align="center">77.01</td><td align="center"><b>78.38</b></td><td align="center">+1.37</td></tr>
+<tr><td>EMem</td><td align="center">3,294</td><td align="center">3,193</td><td align="center">78.37</td><td align="center"><b>81.21</b></td><td align="center">+2.84</td><td align="center">80.32</td><td align="center"><b>82.27</b></td><td align="center">+1.95</td></tr>
 </tbody>
 </table>
 
