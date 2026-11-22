@@ -44,56 +44,25 @@ End-to-end QA scores mix three things: what memory construction preserved, what 
   <img src="assets/teaser.png" width="460" alt="Judge accuracy versus evidence tokens on LoCoMo">
 </p>
 
-Every system runs its own native retrieval pipeline. **J** is LLM-judge accuracy (%, GPT-4o-mini judge). **Tokens** is the mean number of evidence tokens the Reader sees per question.
-
-### LoCoMo
-
 <table>
 <thead>
-<tr><th rowspan="2" align="left">Method</th><th colspan="2">Qwen3.5-27B</th><th colspan="2">GPT-4.1-mini</th></tr>
-<tr><th>J&nbsp;↑</th><th>Tokens&nbsp;↓</th><th>J&nbsp;↑</th><th>Tokens&nbsp;↓</th></tr>
+<tr><th rowspan="2" align="left">Method</th><th colspan="2">LoCoMo · Qwen3.5-27B</th><th colspan="2">LoCoMo · GPT-4.1-mini</th><th colspan="2">LongMemEval-S · Qwen3.5-27B</th></tr>
+<tr><th>J&nbsp;↑</th><th>Tokens&nbsp;↓</th><th>J&nbsp;↑</th><th>Tokens&nbsp;↓</th><th>J&nbsp;↑</th><th>Tokens&nbsp;↓</th></tr>
 </thead>
 <tbody>
-<tr><td><i>Full Context</i></td><td align="center"><i>81.69</i></td><td align="center"><i>20,441</i></td><td align="center"><i>84.03</i></td><td align="center"><i>20,441</i></td></tr>
-<tr><td>RAG</td><td align="center">61.30</td><td align="center">1,945</td><td align="center">63.90</td><td align="center">1,945</td></tr>
-<tr><td>SeCom</td><td align="center">67.92</td><td align="center">2,055</td><td align="center">71.56</td><td align="center">1,707</td></tr>
-<tr><td>Mem0</td><td align="center">62.86</td><td align="center">1,265</td><td align="center">62.14</td><td align="center">1,408</td></tr>
-<tr><td>A-Mem</td><td align="center">57.34</td><td align="center">1,384</td><td align="center">68.44</td><td align="center">1,174</td></tr>
-<tr><td>MemoryOS</td><td align="center">63.05</td><td align="center">4,220</td><td align="center">71.88</td><td align="center">4,941</td></tr>
-<tr><td>LightMem</td><td align="center">77.60</td><td align="center">1,830</td><td align="center">79.61</td><td align="center">2,484</td></tr>
-<tr><td>AtomMem†</td><td align="center">76.56</td><td align="center">1,901</td><td align="center">77.66</td><td align="center">1,959</td></tr>
-<tr><td>SimpleMem</td><td align="center">75.26</td><td align="center">1,529</td><td align="center">80.06</td><td align="center">2,016</td></tr>
-<tr><td>EMem</td><td align="center">76.75</td><td align="center">1,449</td><td align="center">79.42</td><td align="center">1,660</td></tr>
-<tr><td>Nemori</td><td align="center">80.19</td><td align="center">3,421</td><td align="center">82.47</td><td align="center">4,662</td></tr>
-<tr><td>Memora (P)*</td><td align="center">84.29</td><td align="center">14,156</td><td align="center">85.32</td><td align="center">12,262</td></tr>
-<tr><td><b>ContextFact-F</b></td><td align="center">85.32</td><td align="center"><b>1,153</b></td><td align="center">85.58</td><td align="center"><b>932</b></td></tr>
-<tr><td><b>ContextFact-E</b></td><td align="center"><b>86.49</b></td><td align="center">2,907</td><td align="center"><b>87.27</b></td><td align="center">4,139</td></tr>
+<tr><td><i>Full Context</i></td><td align="center"><i>81.69</i></td><td align="center"><i>20,441</i></td><td align="center"><i>84.03</i></td><td align="center"><i>20,441</i></td><td align="center"><i>83.20</i></td><td align="center"><i>103,726</i></td></tr>
+<tr><td>RAG</td><td align="center">61.30</td><td align="center">1,945</td><td align="center">63.90</td><td align="center">1,945</td><td align="center">49.00</td><td align="center">1,965</td></tr>
+<tr><td>SeCom</td><td align="center">67.92</td><td align="center">2,055</td><td align="center">71.56</td><td align="center">1,707</td><td align="center">77.80</td><td align="center">6,537</td></tr>
+<tr><td>Mem0</td><td align="center">62.86</td><td align="center">1,265</td><td align="center">62.14</td><td align="center">1,408</td><td align="center">76.80</td><td align="center">1,192</td></tr>
+<tr><td>LightMem</td><td align="center">77.60</td><td align="center">1,830</td><td align="center">79.61</td><td align="center">2,484</td><td align="center">78.40</td><td align="center">2,896</td></tr>
+<tr><td>SimpleMem</td><td align="center">75.26</td><td align="center">1,529</td><td align="center">80.06</td><td align="center">2,016</td><td align="center">76.60</td><td align="center">1,231</td></tr>
+<tr><td>EMem</td><td align="center">76.75</td><td align="center">1,449</td><td align="center">79.42</td><td align="center">1,660</td><td align="center">87.20</td><td align="center">1,168</td></tr>
+<tr><td>Nemori</td><td align="center">80.19</td><td align="center">3,421</td><td align="center">82.47</td><td align="center">4,662</td><td align="center">81.00</td><td align="center">2,931</td></tr>
+<tr><td>Memora (P)</td><td align="center">84.29</td><td align="center">14,156</td><td align="center">85.32</td><td align="center">12,262</td><td align="center">89.20</td><td align="center">13,588</td></tr>
+<tr><td><b>ContextFact-F</b></td><td align="center">85.32</td><td align="center"><b>1,153</b></td><td align="center">85.58</td><td align="center"><b>932</b></td><td align="center">87.60</td><td align="center"><b>974</b></td></tr>
+<tr><td><b>ContextFact-E</b></td><td align="center"><b>86.49</b></td><td align="center">2,907</td><td align="center"><b>87.27</b></td><td align="center">4,139</td><td align="center"><b>91.00</b></td><td align="center">2,854</td></tr>
 </tbody>
 </table>
-
-### LongMemEval-S
-
-<table>
-<thead>
-<tr><th rowspan="2" align="left">Method</th><th colspan="2">Qwen3.5-27B</th></tr>
-<tr><th>J&nbsp;↑</th><th>Tokens&nbsp;↓</th></tr>
-</thead>
-<tbody>
-<tr><td><i>Full Context</i></td><td align="center"><i>83.20</i></td><td align="center"><i>103,726</i></td></tr>
-<tr><td>RAG</td><td align="center">49.00</td><td align="center">1,965</td></tr>
-<tr><td>SeCom</td><td align="center">77.80</td><td align="center">6,537</td></tr>
-<tr><td>Mem0</td><td align="center">76.80</td><td align="center">1,192</td></tr>
-<tr><td>LightMem</td><td align="center">78.40</td><td align="center">2,896</td></tr>
-<tr><td>SimpleMem</td><td align="center">76.60</td><td align="center">1,231</td></tr>
-<tr><td>EMem</td><td align="center">87.20</td><td align="center">1,168</td></tr>
-<tr><td>Nemori</td><td align="center">81.00</td><td align="center">2,931</td></tr>
-<tr><td>Memora (P)*</td><td align="center">89.20</td><td align="center">13,588</td></tr>
-<tr><td><b>ContextFact-F</b></td><td align="center">87.60</td><td align="center"><b>974</b></td></tr>
-<tr><td><b>ContextFact-E</b></td><td align="center"><b>91.00</b></td><td align="center">2,854</td></tr>
-</tbody>
-</table>
-
-<sub><b>Bold</b> marks the best result in each column. Full Context is a reference and is not ranked. * Memora uses its higher-performing policy variant (P). † AtomMem uses the authors' released pre-extracted facts.</sub>
 
 ### Transfer across memory representations
 
@@ -138,11 +107,11 @@ Across five construction models and five readers on LoCoMo, ContextFact-E accura
 | A-Mem | 64.21 | 49.22 | 53.19 | 36.46 | 57.34 |
 | MemoryOS | 71.82 | 44.24 | 64.89 | 43.75 | 63.05 |
 | LightMem | 81.81 | 79.44 | 73.40 | 46.88 | 77.60 |
-| AtomMem† | 82.16 | 73.52 | 72.70 | 48.96 | 76.56 |
+| AtomMem | 82.16 | 73.52 | 72.70 | 48.96 | 76.56 |
 | SimpleMem | 76.69 | 83.49 | 71.63 | 45.83 | 75.26 |
 | EMem | 82.40 | 77.26 | 68.44 | 50.00 | 76.75 |
 | Nemori | 87.75 | 74.45 | 73.76 | 52.08 | 80.19 |
-| Memora (P)* | 90.37 | 81.62 | 80.85 | 50.00 | 84.29 |
+| Memora (P) | 90.37 | 81.62 | 80.85 | 50.00 | 84.29 |
 | **ContextFact-F** | **90.49** | 88.47 | 76.95 | **54.17** | 85.32 |
 | **ContextFact-E** | **90.49** | **88.79** | **84.04** | 51.04 | **86.49** |
 
@@ -157,11 +126,11 @@ Across five construction models and five readers on LoCoMo, ContextFact-E accura
 | A-Mem | 75.98 | 70.09 | 54.61 | 37.50 | 68.44 |
 | MemoryOS | 79.43 | 55.45 | 70.57 | **64.58** | 71.88 |
 | LightMem | 83.95 | 80.69 | 74.47 | 53.12 | 79.61 |
-| AtomMem† | 82.76 | 74.14 | 74.82 | 53.12 | 77.66 |
+| AtomMem | 82.76 | 74.14 | 74.82 | 53.12 | 77.66 |
 | SimpleMem | 86.80 | 78.19 | 72.34 | 50.00 | 80.06 |
 | EMem | 84.78 | 77.57 | 74.47 | 53.12 | 79.42 |
 | Nemori | 89.54 | 78.50 | 76.95 | 50.00 | 82.47 |
-| Memora (P)* | 90.73 | 83.49 | 80.14 | 59.38 | 85.32 |
+| Memora (P) | 90.73 | 83.49 | 80.14 | 59.38 | 85.32 |
 | **ContextFact-F** | 90.37 | 85.67 | 78.37 | **64.58** | 85.58 |
 | **ContextFact-E** | **91.44** | **89.72** | **81.56** | 59.38 | **87.27** |
 
@@ -177,7 +146,7 @@ Across five construction models and five readers on LoCoMo, ContextFact-E accura
 | SimpleMem | 90.00 | 50.00 | 74.44 | 77.44 | 84.62 | 80.00 | 76.60 |
 | EMem | 94.29 | **100.00** | 77.44 | 85.71 | 92.31 | 83.33 | 87.20 |
 | Nemori | 98.57 | 80.36 | 74.44 | 73.68 | 83.33 | **96.67** | 81.00 |
-| Memora (P)* | 98.57 | 98.21 | 81.20 | 84.21 | **94.87** | 93.33 | 89.20 |
+| Memora (P) | 98.57 | 98.21 | 81.20 | 84.21 | **94.87** | 93.33 | 89.20 |
 | **ContextFact-F** | 97.14 | 96.43 | 80.45 | 84.21 | 91.03 | 86.67 | 87.60 |
 | **ContextFact-E** | **100.00** | **100.00** | **83.46** | **88.72** | 93.59 | 90.00 | **91.00** |
 
