@@ -2,6 +2,32 @@ cff-version: 1.2.0
 message: "If you use this software, please cite the paper."
 title: "ContextFact: Remembering Facts in Context for Long-Term Conversational Agents"
 authors:
-  - name: "Anonymous Authors"
+  - family-names: Huang
+    given-names: Jiayu
+  - family-names: Cai
+    given-names: Yichao
+  - family-names: Li
+    given-names: Xinyu
+  - family-names: Zhang
+    given-names: Zhen
+  - family-names: Shi
+    given-names: Javen Qinfeng
 type: software
 license: MIT
+preferred-citation:
+  type: article
+  title: "ContextFact: Remembering Facts in Context for Long-Term Conversational Agents"
+  authors:
+    - family-names: Huang
+      given-names: Jiayu
+    - family-names: Cai
+      given-names: Yichao
+    - family-names: Li
+      given-names: Xinyu
+    - family-names: Zhang
+      given-names: Zhen
+    - family-names: Shi
+      given-names: Javen Qinfeng
+  year: 2026
+  journal: "arXiv preprint arXiv:2611.29155"
+  url: "https://arxiv.org/abs/2611.29155"
