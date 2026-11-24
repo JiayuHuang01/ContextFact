@@ -1,5 +1,6 @@
 # ContextFact: Remembering Facts in Context for Long-Term Conversational Agents
 
+[![arXiv](https://img.shields.io/badge/arXiv-2611.29155-b31b1b?logo=arxiv&logoColor=white)](https://arxiv.org/abs/2611.29155)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-2ea44f)](LICENSE)
 [![LoCoMo](https://img.shields.io/badge/LoCoMo-86.49%25-c0392b)](#results)
@@ -216,11 +217,14 @@ contextfact/
 ## Citation
 
 ```bibtex
-@misc{contextfact2026,
-  title  = {{ContextFact}: Remembering Facts in Context for Long-Term Conversational Agents},
-  author = {Anonymous Authors},
-  note   = {Under review at ICLR 2027},
-  year   = {2026}
+@misc{huang2026contextfact,
+  title         = {{ContextFact}: Remembering Facts in Context for Long-Term Conversational Agents},
+  author        = {Jiayu Huang and Yichao Cai and Xinyu Li and Zhen Zhang and Javen Qinfeng Shi},
+  year          = {2026},
+  eprint        = {2611.29155},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.CL},
+  url           = {https://arxiv.org/abs/2611.29155}
 }
 ```
 
